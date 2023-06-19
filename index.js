@@ -10,7 +10,8 @@ const cors = require('cors')
 const Parser = require('rss-parser')
 
 
-const PORT = 3001
+const PORT = process.env.PORT || 5000
+
 const RSS_SOURCE = 'http://connect.biorxiv.org/biorxiv_xml.php?subject=all'
 const app = express()
 
