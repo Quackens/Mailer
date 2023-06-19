@@ -17,6 +17,6 @@ NodeJS/Express using the OpenAI API, deployed on Heroku
 
 Jimmy Zhou - jameszho@andrew.cmu.edu
 
-Project Link: [https://github.com/Quackens/Simplifier](https://github.com/Quackens/Simplifier)
+Project Link: [https://github.com/Quackens/Mailer](https://github.com/Quackens/Mailer)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
