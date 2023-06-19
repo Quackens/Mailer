@@ -1,4 +1,3 @@
-// const config = require('./config.js')
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
 }
@@ -46,7 +45,7 @@ const generateContent = (useData) => {
     }))
     const html = text.map(comp => 
         `
-        <h2> ${comp.title} </h2>
+        <h3> ${comp.title} </h3>
         <br>${comp.date}</br>
         <a href=${comp.url}> See more here</a>
         <p> ${comp.content} (summarized) <p>

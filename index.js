@@ -2,6 +2,9 @@ const express = require('express')
 const mail = require('./makeMail.js')
 const summarize = require('./summarize.js')
 
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 
 const cors = require('cors')
 const Parser = require('rss-parser')
@@ -65,6 +68,7 @@ const getLatest = (info, items) => {
 
 // Determines if data needs udpate, returns true if updates 'data', else false
 const updateData = (newData) => {
+    latestUpdateTime = new Date()
     const parsedNew = parseItems(newData).map(item => item.id)
 
     const needUpdate = latestIDs === [] || 
@@ -99,11 +103,13 @@ const main = async () => {
             const {transporter, mailData} = mail.createMail(mail.texts.updateSubject, 
                                                     text.join(''), html.join(''))
             mail.sendMail(transporter, mailData)
+            emailContents = mailData.html
         } else {
             // Create email notifying of no updates
             const {transporter, mailData} = mail.createMail(mail.texts.noUpdateSubject,
                                 mail.texts.noUpdateText, mail.texts.noUpdateHTML)
             mail.sendMail(transporter, mailData)
+            emailContents = mailData.html
         }
         console.log("Mail Sent!")
     })
@@ -112,6 +118,8 @@ const main = async () => {
 
 let data = [] // Contains Information about the latest 5 items
 let latestIDs = [] // Contains the last 5 IDs
+let latestUpdateTime = new Date()
+let emailContents = ''
 
 const mainRunner = () => {
     main()
@@ -129,6 +137,15 @@ mainRunner()
  * 
  */
 
+app.get("", (req, res) => {
+    res.send (
+        `<h2> Server is live</h3> 
+        <p>Last Update: ${latestUpdateTime}</p> 
+        <p> Emailing from: ${process.env.MAIL_ADDR}</p>`
+        + '<h2> Latest Email Contents: </h3>'
+        + emailContents
+        )
+})
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
